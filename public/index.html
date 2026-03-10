@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MY BUDDY - AI Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- ===== TITLE / AUTH SCREEN ===== -->
+  <div id="authScreen" class="screen active">
+    <div class="auth-bg">
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+
+    <div class="auth-container">
+      <!-- Logo / Title -->
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="20" fill="url(#brandGrad)"/>
+            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="3" fill="#fff"/>
+            <circle cx="14" cy="17" r="1.5" fill="rgba(255,255,255,0.7)"/>
+            <circle cx="26" cy="17" r="1.5" fill="rgba(255,255,255,0.7)"/>
+            <defs>
+              <linearGradient id="brandGrad" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#6C63FF"/>
+                <stop offset="100%" stop-color="#3ECFCF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1 class="brand-name">MY BUDDY</h1>
+        <p class="brand-tagline">Your smart AI companion — always here for you</p>
+      </div>
+
+      <!-- Auth Card -->
+      <div class="auth-card">
+        <!-- Tabs -->
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Login</button>
+          <button class="auth-tab" id="registerTab" onclick="switchTab('register')">Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-form active">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email"/>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password"/>
+          </div>
+          <div class="form-error" id="loginError"></div>
+          <button class="btn-primary" onclick="handleLogin()">
+            <span class="btn-text">Login</span>
+            <span class="btn-loader" style="display:none">...</span>
+          </button>
+          <p class="auth-switch">Don't have an account? <a onclick="switchTab('register')">Sign up free</a></p>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="auth-form">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="regUsername" placeholder="Choose a username" autocomplete="username"/>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="regEmail" placeholder="you@example.com" autocomplete="email"/>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="Min. 6 characters" autocomplete="new-password"/>
+          </div>
+          <div class="form-error" id="registerError"></div>
+          <button class="btn-primary" onclick="handleRegister()">
+            <span class="btn-text">Create Account</span>
+            <span class="btn-loader" style="display:none">...</span>
+          </button>
+          <p class="auth-switch">Already have an account? <a onclick="switchTab('login')">Login</a></p>
+        </div>
+      </div>
+
+      <footer class="auth-footer">MADE BY ROHAN DUTTA</footer>
+    </div>
+  </div>
+
+  <!-- ===== CHAT SCREEN ===== -->
+  <div id="chatScreen" class="screen">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="20" fill="url(#sb)"/>
+            <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="3" fill="#fff"/>
+            <defs>
+              <linearGradient id="sb" x1="0" y1="0" x2="40" y2="40">
+                <stop offset="0%" stop-color="#6C63FF"/>
+                <stop offset="100%" stop-color="#3ECFCF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span>MY BUDDY</span>
+        </div>
+        <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+      </div>
+
+      <button class="new-chat-btn" onclick="startNewChat()">
+        <span>＋</span> New Chat
+      </button>
+
+      <div class="sidebar-section-title">Capabilities</div>
+      <div class="capability-list">
+        <div class="capability-item">💬 Daily conversations</div>
+        <div class="capability-item">🧮 Aptitude problems</div>
+        <div class="capability-item">📚 Subject questions</div>
+        <div class="capability-item">💻 Competitive programming</div>
+        <div class="capability-item">✅ Small tasks & more</div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="user-info">
+          <div class="user-avatar" id="sidebarAvatar">U</div>
+          <div class="user-details">
+            <span class="user-name" id="sidebarUsername">User</span>
+            <span class="user-status">Online</span>
+          </div>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="chat-main">
+      <!-- Top bar -->
+      <header class="chat-header">
+        <button class="menu-btn" onclick="toggleSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="chat-header-title">
+          <div class="status-dot"></div>
+          <span>MY BUDDY</span>
+        </div>
+        <div class="header-right">
+          <span class="header-greeting" id="headerGreeting">Hi, User!</span>
+        </div>
+      </header>
+
+      <!-- Messages -->
+      <div class="messages-container" id="messagesContainer">
+        <div class="welcome-area" id="welcomeArea">
+          <div class="welcome-icon">
+            <svg width="60" height="60" viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="20" fill="url(#wg)"/>
+              <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="20" cy="20" r="3" fill="#fff"/>
+              <circle cx="14" cy="17" r="1.5" fill="rgba(255,255,255,0.7)"/>
+              <circle cx="26" cy="17" r="1.5" fill="rgba(255,255,255,0.7)"/>
+              <defs>
+                <linearGradient id="wg" x1="0" y1="0" x2="40" y2="40">
+                  <stop offset="0%" stop-color="#6C63FF"/>
+                  <stop offset="100%" stop-color="#3ECFCF"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <h2 class="welcome-title">Hey there! I'm <span>MY BUDDY</span></h2>
+          <p class="welcome-sub">Ask me anything — from daily chit-chat to coding challenges!</p>
+          <div class="suggestion-grid">
+            <button class="suggestion-chip" onclick="useSuggestion(this)">💡 Solve an aptitude problem</button>
+            <button class="suggestion-chip" onclick="useSuggestion(this)">💻 Help with a coding problem</button>
+            <button class="suggestion-chip" onclick="useSuggestion(this)">📖 Explain a concept</button>
+            <button class="suggestion-chip" onclick="useSuggestion(this)">🗣️ Just have a chat</button>
+          </div>
+        </div>
+        <div id="messagesList"></div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <div class="input-wrapper">
+          <textarea
+            id="messageInput"
+            placeholder="Ask MY BUDDY anything..."
+            rows="1"
+            onkeydown="handleKeyDown(event)"
+            oninput="autoResize(this)"
+          ></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M22 2L11 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        <p class="input-hint">Press Enter to send · Shift+Enter for new line</p>
+      </div>
+
+      <!-- Footer -->
+      <footer class="chat-footer">MADE BY ROHAN DUTTA</footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
